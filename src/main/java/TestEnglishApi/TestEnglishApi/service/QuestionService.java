@@ -30,7 +30,11 @@ public class QuestionService {
     public Question updateQuestion(UUID id, Question newQuestion) {
         return questionRepository.findById(id).map(q -> {
             q.setQuestionText(newQuestion.getQuestionText());
+//            q.setType(newQuestion.getType());
             q.setType(newQuestion.getType());
+            q.setType_B(newQuestion.getType_B());
+            q.setType_C(newQuestion.getType_C());
+            q.setType_D(newQuestion.getType_D());
             q.setCorrectAnswer(newQuestion.getCorrectAnswer());
             return questionRepository.save(q);
         }).orElseThrow(() -> new RuntimeException("Question not found"));

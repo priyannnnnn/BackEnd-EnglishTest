@@ -43,8 +43,11 @@ public class QuestionController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createQuestion(@AuthenticationPrincipal User user, @RequestBody Question question) {
+
         if (user.getRole() == Role.ADMIN) {
-            question.setId(UUID.randomUUID()); // Ensure UUID is assigned
+            var userrr = user.getRole()== Role.ADMIN;
+            System.out.println(userrr);
+//            question.setId(UUID.randomUUID()); // Ensure UUID is assigned
             Question savedQuestion = questionRepository.save(question);
             return ResponseEntity.ok(savedQuestion);
         } else {
@@ -71,7 +74,11 @@ public class QuestionController {
         if(user.getRole() == Role.ADMIN){
             return questionRepository.findById(id).map(question -> {
                 question.setQuestionText(updatedQuestion.getQuestionText());
+//                question.setType(updatedQuestion.getType());
                 question.setType(updatedQuestion.getType());
+                question.setType_B(updatedQuestion.getType_B());
+                question.setType_C(updatedQuestion.getType_C());
+                question.setType_D(updatedQuestion.getType_D());
                 question.setCorrectAnswer(updatedQuestion.getCorrectAnswer());
                 questionRepository.save(question);
                 return ResponseEntity.ok(question);
