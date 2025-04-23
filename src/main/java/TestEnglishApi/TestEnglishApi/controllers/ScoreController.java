@@ -3,15 +3,14 @@ package TestEnglishApi.TestEnglishApi.controllers;
 import TestEnglishApi.TestEnglishApi.entities.Score;
 import TestEnglishApi.TestEnglishApi.repositories.ScoreRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/auth/scores")
+@CrossOrigin(origins = {"http://localhost:3000", "https://your-app-name.onrender.com"})
 public class ScoreController {
     private final ScoreRepository scoreRepository;
 
@@ -20,9 +19,18 @@ public class ScoreController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<Score>GetUserScore(@PathVariable UUID userId){
-        Score score = scoreRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Score not found"));
+    public ResponseEntity<List<Score>> getAllScoresForUser(@PathVariable UUID userId){
+        List<Score> scores = scoreRepository.findByUserId(userId);
+        return ResponseEntity.ok(scores);
+    }
+
+    @GetMapping("section/{userId}")
+    public ResponseEntity<Score> getUserScore(
+            @PathVariable UUID userId,
+            @RequestParam String sectionType
+    ){
+        Score score = scoreRepository.findByUserIdAndSectionType(userId, sectionType)
+                .orElseThrow(()-> new RuntimeException("score not found"));
         return ResponseEntity.ok(score);
     }
 }

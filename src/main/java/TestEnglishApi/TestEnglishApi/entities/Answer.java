@@ -23,13 +23,19 @@ public class Answer {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "question_id", nullable = false)
-    private Question question;
+//    @ManyToOne
+//    @JoinColumn(name = "question_id", nullable = false)
+//    private Question question;
+    @Column(name = "question_id")
+    private UUID questionId; // Can be from grammar, listening, or reading
 
-    @Column(nullable = false)
+    @Column(name = "section_type") // GRAMMAR, LISTENING, READING
+    private String sectionType;
+
+    @Column(name = "selected_answer",nullable = false)
     private String selectedAnswer;
 
-    @Column(nullable = false)
+    @Column( nullable = false)
     private boolean isCorrect;
+
 }

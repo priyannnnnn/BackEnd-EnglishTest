@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/auth/questions")
+@RequestMapping("/auth/questions/grammar")
+@CrossOrigin(origins = {"http://localhost:3000", "https://your-app-name.onrender.com"})
 public class QuestionController {
     private final QuestionService questionService;
     private final QuestionRepository questionRepository;
@@ -47,7 +48,6 @@ public class QuestionController {
         if (user.getRole() == Role.ADMIN) {
             var userrr = user.getRole()== Role.ADMIN;
             System.out.println(userrr);
-//            question.setId(UUID.randomUUID()); // Ensure UUID is assigned
             Question savedQuestion = questionRepository.save(question);
             return ResponseEntity.ok(savedQuestion);
         } else {

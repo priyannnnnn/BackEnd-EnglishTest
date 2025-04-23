@@ -5,10 +5,7 @@ import TestEnglishApi.TestEnglishApi.entities.Answer;
 import TestEnglishApi.TestEnglishApi.entities.Question;
 import TestEnglishApi.TestEnglishApi.entities.Score;
 import TestEnglishApi.TestEnglishApi.entities.User;
-import TestEnglishApi.TestEnglishApi.repositories.AnswerRepository;
-import TestEnglishApi.TestEnglishApi.repositories.QuestionRepository;
-import TestEnglishApi.TestEnglishApi.repositories.ScoreRepository;
-import TestEnglishApi.TestEnglishApi.repositories.UserRepository;
+import TestEnglishApi.TestEnglishApi.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,40 +20,85 @@ public class AnswerService {
 
     private final AnswerRepository answerRepository;
     private final ScoreRepository scoreRepository;
-    private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
+    private final QuestionRepository questionRepository;
+    private final ListeningRepository listeningRepository;
+    private final ReadingRepository readingRepository;
 
-    public List<Answer>submitAnswers(UUID userId, List<AnswerDTO> answers){
-        User user = userRepository.findById(userId).orElseThrow(()-> new RuntimeException("Usser Not found"));
-
-        List<Answer>savedAnswers = new ArrayList<>();
+    public List<Answer> submitAnswers(UUID userId, List<AnswerDTO> answers) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usser Not found"));
+        List<Answer> savedAnswers = new ArrayList<>();
         int totalScore = 0;
 
-        for (AnswerDTO answerDTO : answers){
-            Question question = questionRepository.findById(answerDTO.getQuestionId())
-                    .orElseThrow(()-> new RuntimeException("Question not found"));
+        for (AnswerDTO dto : answers) {
+            String section = dto.getSectionType().toUpperCase();
+            String correctAnswer = "";
 
-            boolean isCorrect = question.getCorrectAnswer().equals(answerDTO.getSelectedAnswer());
-
+            switch (section) {
+                case "GRAMMAR":
+                    correctAnswer = questionRepository.findById(dto.getQuestionId())
+                            .orElseThrow(() -> new RuntimeException("Grammar Questions not found"))
+                            .getCorrectAnswer();
+                    break;
+                case "LISTENING":
+                    correctAnswer = listeningRepository.findById(dto.getQuestionId())
+                            .orElseThrow(() -> new RuntimeException("Listening not found"))
+                            .getCorrectAnswer();
+                    break;
+                case "READING":
+                    correctAnswer = readingRepository.findById(dto.getQuestionId())
+                            .orElseThrow(() -> new RuntimeException("Reading not found"))
+                            .getCorrectAnswer();
+                    break;
+                default:
+                    throw new RuntimeException("Invalid section type: " + section);
+            }
+            boolean isCorrect = correctAnswer.equalsIgnoreCase(dto.getSelectedAnswer());
             Answer answer = new Answer();
             answer.setUser(user);
-            answer.setQuestion(question);
-            answer.setSelectedAnswer(answerDTO.getSelectedAnswer());
+            answer.setQuestionId(dto.getQuestionId());
+            answer.setSelectedAnswer(dto.getSelectedAnswer());
             answer.setCorrect(isCorrect);
-
-            if (isCorrect){
-                totalScore += 10;
-            }
+            answer.setSectionType(section);
 
             savedAnswers.add(answerRepository.save(answer));
+            if (isCorrect) totalScore += 10;
         }
 
-        Score score = scoreRepository.findByUserId(userId).orElse(new Score());
+        Score score = scoreRepository.findByUserIdAndSectionType(userId, answers.get(0).getSectionType().toUpperCase())
+                .orElse(new Score());
         score.setUser(user);
+        score.setSectionType(answers.get(0).getSectionType().toUpperCase());
         score.setTotalScore(totalScore);
         score.setDateTaken(LocalDateTime.now());
-        scoreRepository.save(score);
 
+        scoreRepository.save(score);
         return savedAnswers;
     }
 }
+
+//            Answer answer = new Answer();
+//            answer.setUser(user);
+//            answer.setQuestion(question);
+//            answer.setSelectedAnswer(answerDTO.getSelectedAnswer());
+//            answer.setCorrect(isCorrect);
+//            answer.setSectionType(answerDTO.getSectionType()); // NEW
+//
+//            sectionType = answerDTO.getSectionType(); // store for Score later
+//
+//            if (isCorrect){
+//                totalScore += 10;
+//            }
+//
+//            savedAnswers.add(answerRepository.save(answer));
+//        }
+//
+//        Score score = scoreRepository.findByUserId(userId).orElse(new Score());
+//        score.setUser(user);
+//        score.setTotalScore(totalScore);
+//        score.setDateTaken(LocalDateTime.now());
+//        score.setSectionType(sectionType); // NEW
+//        scoreRepository.save(score);
+//
+//        return savedAnswers;
+

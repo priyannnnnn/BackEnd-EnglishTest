@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AnswerRepository extends JpaRepository<Answer, UUID> {
-//    List<Answer>findByAdmin(User admin);
 
     // Find answers by user
     List<Answer> findByUser(User user);

@@ -13,6 +13,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/auth/answers")
 @RequiredArgsConstructor
+@CrossOrigin(origins = {"http://localhost:3000", "https://your-app-name.onrender.com"})
 public class AnswerController {
     private final AnswerService answerService;
 

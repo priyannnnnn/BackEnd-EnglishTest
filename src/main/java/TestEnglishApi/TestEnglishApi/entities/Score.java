@@ -29,4 +29,8 @@ public class Score {
 
     @Column(nullable = false)
     private LocalDateTime dateTaken;
+
+    @Column(name = "section_type") // NEW
+    private String sectionType;
+
 }
