@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/auth")
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "https://your-app-name.onrender.com"})
+@CrossOrigin(origins = {"http://localhost:3000", "https://139.162.6.202",  "http://139.162.6.202"})
 public class AuthenticationController {
     private final JwtService jwtService;
 

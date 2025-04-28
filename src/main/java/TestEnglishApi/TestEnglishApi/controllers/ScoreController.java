@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/auth/scores")
-@CrossOrigin(origins = {"http://localhost:3000", "https://your-app-name.onrender.com"})
+@CrossOrigin(origins = {"http://localhost:3000", "https://139.162.6.202",  "http://139.162.6.202"})
 public class ScoreController {
     private final ScoreRepository scoreRepository;
 

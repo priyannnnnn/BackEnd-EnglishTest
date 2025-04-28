@@ -2,7 +2,6 @@ package TestEnglishApi.TestEnglishApi.service;
 
 import TestEnglishApi.TestEnglishApi.dtos.AnswerDTO;
 import TestEnglishApi.TestEnglishApi.entities.Answer;
-import TestEnglishApi.TestEnglishApi.entities.Question;
 import TestEnglishApi.TestEnglishApi.entities.Score;
 import TestEnglishApi.TestEnglishApi.entities.User;
 import TestEnglishApi.TestEnglishApi.repositories.*;
@@ -24,6 +23,7 @@ public class AnswerService {
     private final QuestionRepository questionRepository;
     private final ListeningRepository listeningRepository;
     private final ReadingRepository readingRepository;
+
 
     public List<Answer> submitAnswers(UUID userId, List<AnswerDTO> answers) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usser Not found"));
@@ -76,29 +76,3 @@ public class AnswerService {
         return savedAnswers;
     }
 }
-
-//            Answer answer = new Answer();
-//            answer.setUser(user);
-//            answer.setQuestion(question);
-//            answer.setSelectedAnswer(answerDTO.getSelectedAnswer());
-//            answer.setCorrect(isCorrect);
-//            answer.setSectionType(answerDTO.getSectionType()); // NEW
-//
-//            sectionType = answerDTO.getSectionType(); // store for Score later
-//
-//            if (isCorrect){
-//                totalScore += 10;
-//            }
-//
-//            savedAnswers.add(answerRepository.save(answer));
-//        }
-//
-//        Score score = scoreRepository.findByUserId(userId).orElse(new Score());
-//        score.setUser(user);
-//        score.setTotalScore(totalScore);
-//        score.setDateTaken(LocalDateTime.now());
-//        score.setSectionType(sectionType); // NEW
-//        scoreRepository.save(score);
-//
-//        return savedAnswers;
-

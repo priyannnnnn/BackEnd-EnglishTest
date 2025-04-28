@@ -11,8 +11,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "scores")
-@Getter
-@Setter
+//@Getter
+//@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Score {
@@ -33,4 +33,43 @@ public class Score {
     @Column(name = "section_type") // NEW
     private String sectionType;
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public int getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(int totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public LocalDateTime getDateTaken() {
+        return dateTaken;
+    }
+
+    public void setDateTaken(LocalDateTime dateTaken) {
+        this.dateTaken = dateTaken;
+    }
+
+    public String getSectionType() {
+        return sectionType;
+    }
+
+    public void setSectionType(String sectionType) {
+        this.sectionType = sectionType;
+    }
 }
