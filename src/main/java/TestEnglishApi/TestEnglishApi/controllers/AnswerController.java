@@ -13,7 +13,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/auth/answers")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000", "https://139.162.6.202", "http://139.162.6.202"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173", "http://139.162.6.202"})
 public class AnswerController {
     private final AnswerService answerService;
 

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/auth/questions/grammar")
-@CrossOrigin(origins = {"http://localhost:3000", "https://139.162.6.202",  "http://139.162.6.202"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173",  "http://139.162.6.202"})
 public class QuestionController {
     private final QuestionService questionService;
     private final QuestionRepository questionRepository;
