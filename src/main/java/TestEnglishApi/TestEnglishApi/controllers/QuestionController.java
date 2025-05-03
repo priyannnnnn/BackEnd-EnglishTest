@@ -74,7 +74,6 @@ public class QuestionController {
         if(user.getRole() == Role.ADMIN){
             return questionRepository.findById(id).map(question -> {
                 question.setQuestionText(updatedQuestion.getQuestionText());
-//                question.setType(updatedQuestion.getType());
                 question.setType(updatedQuestion.getType());
                 question.setType_B(updatedQuestion.getType_B());
                 question.setType_C(updatedQuestion.getType_C());

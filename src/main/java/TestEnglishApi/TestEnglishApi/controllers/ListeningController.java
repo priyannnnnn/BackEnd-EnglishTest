@@ -4,7 +4,6 @@ import TestEnglishApi.TestEnglishApi.entities.Listening;
 import TestEnglishApi.TestEnglishApi.entities.Role;
 import TestEnglishApi.TestEnglishApi.entities.User;
 import TestEnglishApi.TestEnglishApi.service.ListeningService;
-//import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.UrlResource;
@@ -14,7 +13,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
-//import org.springframework.core.io.UrlResource;
 
 import java.io.IOException;
 import java.nio.file.Files;
