@@ -1,29 +1,32 @@
 package TestEnglishApi.TestEnglishApi.entities;
 
-import TestEnglishApi.TestEnglishApi.dtos.WordWithCategory;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Type;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "vocabulary_question")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Vocabulary {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private String title;
 
-    @ElementCollection
-    private List<String> categories;
+    @Column(name = "categories", columnDefinition = "text[]")
+    private String[] categories;
 
-    @Type(JsonBinaryType.class)
-    @Column(columnDefinition = "jsonb")
-    private List<WordWithCategory> words;
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<VocabularyWord> words = new ArrayList<>();
 
     public UUID getId() {
         return id;
@@ -41,19 +44,19 @@ public class Vocabulary {
         this.title = title;
     }
 
-    public List<String> getCategories() {
+    public String[] getCategories() {
         return categories;
     }
 
-    public void setCategories(List<String> categories) {
+    public void setCategories(String[] categories) {
         this.categories = categories;
     }
 
-    public List<WordWithCategory> getWords() {
+    public List<VocabularyWord> getWords() {
         return words;
     }
 
-    public void setWords(List<WordWithCategory> words) {
+    public void setWords(List<VocabularyWord> words) {
         this.words = words;
     }
 }

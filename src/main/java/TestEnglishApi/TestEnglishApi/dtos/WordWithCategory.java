@@ -1,14 +1,31 @@
 package TestEnglishApi.TestEnglishApi.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.io.Serializable;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class WordWithCategory {
-
+public class WordWithCategory implements Serializable {
     private String word;
     private String correctCategory;
+
+    public WordWithCategory() {}
+
+    public WordWithCategory(String word, String correctCategory) {
+        this.word = word;
+        this.correctCategory = correctCategory;
+    }
+
+    public String getWord() {
+        return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
+    }
+
+    public String getCorrectCategory() {
+        return correctCategory;
+    }
+
+    public void setCorrectCategory(String correctCategory) {
+        this.correctCategory = correctCategory;
+    }
 }
