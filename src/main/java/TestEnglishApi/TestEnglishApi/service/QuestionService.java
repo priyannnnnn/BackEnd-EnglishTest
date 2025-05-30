@@ -2,6 +2,7 @@ package TestEnglishApi.TestEnglishApi.service;
 
 import TestEnglishApi.TestEnglishApi.entities.Question;
 import TestEnglishApi.TestEnglishApi.repositories.QuestionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,10 @@ public class QuestionService {
         return questionRepository.save(question);
     }
 
+    public Question getById(UUID id){
+        return questionRepository.findById(id).orElseThrow(()-> new RuntimeException("Question not found with id: " + id));
+    }
+
     public Question updateQuestion(UUID id, Question newQuestion) {
         return questionRepository.findById(id).map(q -> {
             q.setQuestionText(newQuestion.getQuestionText());
@@ -40,8 +45,10 @@ public class QuestionService {
         }).orElseThrow(() -> new RuntimeException("Question not found"));
     }
 
+    @Transactional
     public void deleteQuestion(UUID id) {
         questionRepository.deleteById(id);
+        questionRepository.flush();
     }
 
 }

@@ -45,27 +45,42 @@ public class QuestionController {
     @PostMapping("/create")
     public ResponseEntity<?> createQuestion(@AuthenticationPrincipal User user, @RequestBody Question question) {
 
-        if (user.getRole() == Role.ADMIN) {
-            var userrr = user.getRole()== Role.ADMIN;
-            System.out.println(userrr);
-            Question savedQuestion = questionRepository.save(question);
-            return ResponseEntity.ok(savedQuestion);
-        } else {
+        if(user.getRole() != Role.ADMIN){
             return ResponseEntity.status(403).body("Unauthorized: Only admins can create questions.");
         }
+        if(question.getType() == null || question.getType_B() == null ||
+            question.getType_C() == null || question.getType_D() == null){
+            return ResponseEntity.badRequest().body("All fields (type, type_B, type_C, type_D, questionText, correctAnswer) must be provided.");
+        }
+        Question savedQuestion = questionRepository.save(question);
+        return ResponseEntity.ok(savedQuestion);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteQuestion(@AuthenticationPrincipal User user, @PathVariable UUID id) {
         if (user.getRole() == Role.ADMIN) {
             if (questionRepository.existsById(id)) {
-                questionRepository.deleteById(id);
+               questionService.deleteQuestion(id);
                 return ResponseEntity.ok("Question deleted successfully.");
             } else {
                 return ResponseEntity.notFound().build();
             }
         } else {
             return ResponseEntity.status(403).body("Unauthorized: Only admins can delete questions.");
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> getQuestionById(@AuthenticationPrincipal User user, @PathVariable UUID id) {
+        if (user.getRole() == Role.ADMIN) {
+            try {
+                Question question = questionService.getById(id);
+                return ResponseEntity.ok(question);
+            } catch (RuntimeException e) {
+                return ResponseEntity.status(404).body(e.getMessage());
+            }
+        } else {
+            return ResponseEntity.status(403).body("Unauthorized: Only admins can view questions.");
         }
     }
 
